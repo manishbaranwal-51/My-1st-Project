@@ -1,0 +1,100 @@
+🚀 Jenkins and Web Server Deployment on Azure VM
+This project demonstrates how to deploy and configure Jenkins and a simple web application on an Ubuntu Azure Virtual Machine, running both services on different ports.
+
+🧩 1. Project Overview
+The goal is to:
+Host Jenkins on port 8080
+Host a simple HTML web page on port 8081
+Verify both services run simultaneously on the same VM
+Make them publicly accessible through Azure Network Security Group (NSG)
+
+🧰 2. Prerequisites
+Before starting:
+Azure account with permission to create resources
+Ubuntu Virtual Machine (minimum 2 GB RAM recommended)
+SSH access to VM
+Basic understanding of Linux commands
+
+⚙️ 3. Setting up Azure VM
+Create an Ubuntu 22.04 LTS VM in Azure.
+Allow inbound ports:
+22 (SSH)
+8080 (Jenkins)
+8081 (Web Server)
+Connect via SSH:
+ssh -i <your-key.pem> azureuser@<vm-public-ip>
+
+🧱 4. Installing and Configuring Jenkins
+Install dependencies
+sudo apt update -y
+sudo apt install openjdk-17-jdk -y
+
+Add Jenkins repository and install
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+sudo apt update -y
+sudo apt install jenkins -y
+
+Start and enable Jenkins
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+sudo systemctl status jenkins
+
+🔑 5. Unlocking Jenkins
+Retrieve the initial admin password:
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+
+Access Jenkins in your browser:
+http://<vm-public-ip>:8080
+Paste the password, install suggested plugins, and create your admin user.
+
+🌐 6. Deploying a Simple HTML Web Page
+Create and serve a simple HTML file on port 8081.
+mkdir ~/simple-web
+cd ~/simple-web
+nano index.html
+
+Paste:
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello from Azure VM</title>
+</head>
+<body style="text-align:center; font-family:Arial;">
+  <h1>Welcome to My Simple Web Page 🚀</h1>
+  <p>Hosted on Ubuntu and running alongside Jenkins.</p>
+</body>
+</html>
+
+Start a web server:
+python3 -m http.server 8081
+
+(Optional) Run in background:
+nohup python3 -m http.server 8081 &
+
+🔍 7. Verifying Running Services and Ports
+Check active services:
+systemctl list-units --type=service --state=running
+
+Check open ports:
+sudo ss -tuln
+
+Check which process owns each port:
+sudo lsof -i -P -n | grep LISTEN
+
+🌎 8. Access in Browser
+Jenkins → http://<vm-public-ip>:8080
+Web App → http://<vm-public-ip>:8081
+
+Make sure Azure NSG allows both ports (8080, 8081).
+
+🧾 Author
+Manish 
+💼 IT Engineer | ☁️ Cloud & DevOps Enthusiast
+📍 Hosted on: Azure | 🧰 Tools: Jenkins, Python, Ubuntu
