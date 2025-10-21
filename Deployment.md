@@ -139,5 +139,7 @@ Make sure both ports (8080, 8081) are allowed in Azure NSG.
 ## 🧾 Author
 **Manish Baranwal**
 💼 IT Engineer | ☁️ Cloud & DevOps Enthusiast
-📍 Hosted on: Azure | 🧰 Tools: Jenkins, Python, Ubuntu
+📍 Hosted on: Azure | 
+🧰 Tools: Jenkins, Python, Ubuntu
+
 [GitHub](https://github.com/manishbaranwal-51) | [LinkedIn](https://www.linkedin.com/in/manishbaranwal51/)
